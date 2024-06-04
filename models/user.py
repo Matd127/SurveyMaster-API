@@ -3,13 +3,12 @@ from typing import Optional
 from bson import ObjectId
 import re
 
-
 class ObjectId(ObjectId):
     @classmethod
     def __get_validators__(cls):
         yield cls.validate
 
-    @classmethod
+    @staticmethod
     def validate(cls, v):
         if not ObjectId.is_valid(v):
             raise ValueError('Invalid ObjectId')
@@ -17,7 +16,8 @@ class ObjectId(ObjectId):
 
 
 class User(BaseModel):
-    id: Optional[ObjectId] = Field(alias='_id')
+    id: Optional[ObjectId] = Field(alias='_id', default=None)
+    # id: ObjectId = Field(alias='_id', default=None)
     username: constr(min_length=3, max_length=50)
     email: EmailStr
     password: constr(min_length=8, max_length=50)

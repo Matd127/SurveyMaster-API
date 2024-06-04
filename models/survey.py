@@ -24,7 +24,6 @@ class Survey(BaseModel):
     start_date: datetime.datetime
     end_date: datetime.datetime
     is_open: bool
-    questions: Optional[list[ObjectId]] = []  # Temporary
     owner: constr(min_length=3, max_length=50)  # Temporary
     tags: Optional[list[ObjectId]] = []  # Temporary
 
