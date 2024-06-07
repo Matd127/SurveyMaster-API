@@ -4,18 +4,6 @@ from bson import ObjectId
 import re
 
 
-class ObjectId(ObjectId):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def validate(cls, v):
-        if not ObjectId.is_valid(v):
-            raise ValueError('Invalid ObjectId')
-        return ObjectId(v)
-
-
 class Tag(BaseModel):
     id: Optional[ObjectId] = Field(alias='_id')
     name: constr(min_length=3, max_length=50)
@@ -26,3 +14,8 @@ class Tag(BaseModel):
             raise ValueError(
                 'must contain only letters, numbers, and underscores')
         return v
+
+    class Config:
+        populate_by_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}

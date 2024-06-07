@@ -1,1 +1,10 @@
 .env
+
+# Ignore __pycache__ directories in specific folders
+config/__pycache__/
+models/__pycache__/
+routes/__pycache__/
+tests/__pycache__/
+
+# Ignore __pycache__ directories in all folders 
+**/__pycache__/s
