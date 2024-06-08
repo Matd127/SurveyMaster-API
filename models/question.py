@@ -3,15 +3,16 @@ from typing import Optional
 from bson import ObjectId
 import re
 
+
 class Question(BaseModel):
     id: Optional[ObjectId] = Field(default_factory=ObjectId, alias='_id')
     question_name: constr(min_length=5, max_length=200)
-    question_type: constr(regex='^(single|multiple|text)$')
+    question_type: str = Field(pattern='^(single|multiple|text)$')
     question_option: Optional[str]
     question_options: Optional[list[str]]
     survey: ObjectId
 
-    @model_validator(pre=True)
+    @model_validator(mode='before')
     def check_options(cls, values):
         question_type = values.get('question_type')
 

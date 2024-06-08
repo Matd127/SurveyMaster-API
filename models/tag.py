@@ -5,7 +5,7 @@ import re
 
 
 class Tag(BaseModel):
-    id: Optional[ObjectId] = Field(alias='_id')
+    id: Optional[ObjectId] = Field(default_factory=ObjectId, alias='_id')
     name: constr(min_length=3, max_length=50)
 
     @field_validator('name')
