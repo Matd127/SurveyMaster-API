@@ -32,13 +32,13 @@ def create_user():
         user = User(**data)
         collection = db['users']
         collection.insert_one(user.dict(by_alias=True))
-        return jsonify({"message": "Successfully created new account!"}), 201
+        return jsonify({"message": "Successfully created new account"}), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
 
 @users_bp.route('/user/<id>', methods=['PUT'])
-def update_user(id):
+def edit_user(id):
     user_id = ObjectId(id)
     user = db['users'].find_one({'_id': user_id})
 
@@ -58,7 +58,7 @@ def update_user(id):
 def delete_user(id):
     try:
         user_id = ObjectId(id)
-    except Exception as e:
+    except Exception:
         return jsonify({'error': 'Invalid user ID format'}), 400
 
     result = db['users'].delete_one({'_id': user_id})
