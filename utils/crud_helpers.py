@@ -1,11 +1,19 @@
-from flask import jsonify, Response
+from flask import request, jsonify, Response
 from bson.json_util import dumps
 from bson import ObjectId
 from config.db import db
 
 
 def get_all(collection_name):
-    items = db[collection_name].find()
+    id = request.args.get('id')
+    if id:
+        try:
+            items = db[collection_name].find({"_id": ObjectId(id)})
+        except Exception as e:
+            return Response({"error": str(e)}, mimetype='application/json'), 400
+    else:
+        items = db[collection_name].find()
+
     items_list = dumps(list(items))
     return Response(items_list, mimetype='application/json'), 200
 
