@@ -2,8 +2,7 @@ from flask import Blueprint, request, jsonify
 from models.answer import Answer
 from utils.crud_helpers import get_all, get_one, create_item, update_item, delete_item
 
-answers_bp = Blueprint('questions', __name__)
-
+answers_bp = Blueprint('answers', __name__)
 
 @answers_bp.route('/answers', methods=['GET'])
 def get_all_answers():

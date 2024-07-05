@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, constr, field_validator, Field
+from pydantic import BaseModel, field_validator, Field
 from typing import Optional
 from bson import ObjectId
 import re
@@ -6,7 +6,7 @@ import re
 
 class Tag(BaseModel):
     id: Optional[ObjectId] = Field(default_factory=ObjectId, alias='_id')
-    name: constr(min_length=3, max_length=50)
+    name: str = Field(None, min_length=3, max_length=50)
 
     @field_validator('name')
     def name_alphanumeric(cls, v):

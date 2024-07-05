@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional, List, Union
 from bson import ObjectId
 
@@ -9,12 +9,7 @@ class Answer(BaseModel):
     answer_value: Optional[Union[str, List[str]]]
     survey: ObjectId
 
-    class Config:
-        populate_by_name = True
-        arbitrary_types_allowed = True
-        json_encoders = {ObjectId: str}
-
-    @root_validator(pre=True)
+    @field_validator('answer_value')
     def validate_answer(cls, values):
         answer_value = values.get('answer_value')
 
@@ -22,3 +17,8 @@ class Answer(BaseModel):
             raise ValueError('All items in answer_value list must be strings.')
 
         return values
+
+    class Config:
+        populate_by_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}

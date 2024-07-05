@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, EmailStr, constr, validator
+from pydantic import BaseModel, Field, EmailStr, field_validator
 from typing import Optional
 from bson import ObjectId
 import re
@@ -6,18 +6,18 @@ import re
 
 class User(BaseModel):
     id: Optional[ObjectId] = Field(default_factory=ObjectId, alias='_id')
-    username: constr(min_length=3, max_length=50)
+    username: str = Field(None, min_length=3, max_length=10)
     email: EmailStr
-    password: constr(min_length=8, max_length=50)
+    password: str = Field(None, min_length=8, max_length=50)
 
-    @validator('username')
+    @field_validator('username')
     def username_alphanumeric(cls, v):
         if not re.match(r'^\w+$', v):
             raise ValueError(
                 'must contain only letters, numbers, and underscores')
         return v
 
-    @validator('password')
+    @field_validator('password')
     def password_complexity(cls, v):
         if not re.match(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$', v):
             raise ValueError(

@@ -1,8 +1,10 @@
 from flask import Blueprint, request, jsonify
 from models.question import Question
 from utils.crud_helpers import get_all, get_one, create_item, update_item, delete_item
+from bson import ObjectId
 
 questions_bp = Blueprint('questions', __name__)
+
 
 @questions_bp.route('/question', methods=['GET'])
 def get_questions():
@@ -18,6 +20,8 @@ def get_question(id):
 def create_question():
     try:
         data = request.get_json()
+        data['survey'] = ObjectId(data['survey'])
+
         question = Question(**data)
         return create_item('questions', question.dict(by_alias=True))
     except Exception as e:

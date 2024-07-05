@@ -3,7 +3,6 @@ from bson.json_util import dumps
 from bson import ObjectId
 from config.db import db
 
-
 def get_all(collection_name):
     id = request.args.get('id')
     if id:
