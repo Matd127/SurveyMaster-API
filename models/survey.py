@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 from typing import Optional, List
 from bson import ObjectId
 import re
@@ -24,12 +24,14 @@ class Survey(BaseModel):
 
     @field_validator('end_date')
     def check_dates(cls, v, values):
-        start_date = values.get('start_date')
+        start_date = getattr(values, 'start_date', None)
+        print(f"start_date: {start_date}, end_date: {v}")  # Debug print
         if start_date and v < start_date:
             raise ValueError('End date must be after start date')
         return v
 
-    class Config:
-        populate_by_name = True
-        arbitrary_types_allowed = True
-        json_encoders = {ObjectId: str}
+    model_config = ConfigDict(
+        populate_by_name=True,
+        arbitrary_types_allowed=True,
+        json_encoders={ObjectId: str}
+    )

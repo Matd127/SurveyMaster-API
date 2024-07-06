@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, EmailStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, EmailStr, field_validator
 from typing import Optional
 from bson import ObjectId
 import re
@@ -6,7 +6,7 @@ import re
 
 class User(BaseModel):
     id: Optional[ObjectId] = Field(default_factory=ObjectId, alias='_id')
-    username: str = Field(None, min_length=3, max_length=10)
+    username: str = Field(None, min_length=3, max_length=50)
     email: EmailStr
     password: str = Field(None, min_length=8, max_length=50)
 
@@ -18,13 +18,17 @@ class User(BaseModel):
         return v
 
     @field_validator('password')
-    def password_complexity(cls, v):
+    def check_password_complexity(cls, v):
         if not re.match(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$', v):
-            raise ValueError(
-                'Password must be at least 8 characters long, and include at least one lowercase letter, one uppercase letter, one digit, and one special character')
+            raise ValueError('Password must be at least 8 characters long, '
+                             'and include at least one lowercase letter, '
+                             'one uppercase letter, one digit, and '
+                             'one special character')
         return v
 
-    class Config:
-        populate_by_name = True
-        arbitrary_types_allowed = True
-        json_encoders = {ObjectId: str}
+    model_config = ConfigDict(
+        populate_by_name=True,
+        arbitrary_types_allowed=True,
+        json_encoders={ObjectId: str}
+    )
+

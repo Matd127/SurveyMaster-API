@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from models.answer import Answer
 from utils.crud_helpers import get_all, get_one, create_item, update_item, delete_item
+from bson import ObjectId
 
 answers_bp = Blueprint('answers', __name__)
 
@@ -18,6 +19,7 @@ def get_answer(id):
 def create_answer():
     try:
         data = request.get_json()
+        data['question_id'] = ObjectId(data['question_id'])
         answer = Answer(**data)
         return create_item('answers', answer.dict(by_alias=True))
     except Exception as e:
