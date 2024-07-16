@@ -5,8 +5,12 @@ from routes.auth_routes import auth_bp
 from routes.tag_routes import tags_bp
 from routes.question_routes import questions_bp
 from routes.answer_routes import answers_bp
+from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
+app.config['JWT_SECRET_KEY'] = 'super-secret'
+jwt = JWTManager(app)
+
 app.register_blueprint(surveys_bp)
 app.register_blueprint(users_bp)
 app.register_blueprint(auth_bp)
