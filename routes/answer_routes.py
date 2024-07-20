@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from models.answer import Answer
 from utils.crud_helpers import get_all, get_one, create_item, update_item, delete_item
 from bson import ObjectId
+from flask_jwt_extended import jwt_required
 
 answers_bp = Blueprint('answers', __name__)
 
@@ -14,7 +15,7 @@ def get_all_answers():
 def get_answer(id):
     return get_one('answers', id)
 
-
+@jwt_required()
 @answers_bp.route('/answers', methods=['POST'])
 def create_answer():
     try:
@@ -25,7 +26,7 @@ def create_answer():
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
-
+@jwt_required()
 @answers_bp.route('/answers/<id>', methods=['PUT'])
 def update_answer(id):
     try:
@@ -35,7 +36,7 @@ def update_answer(id):
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
-
+@jwt_required()
 @answers_bp.route('/answers/<id>', methods=['DELETE'])
 def delete_answer(id):
     return delete_item('answers', id)
