@@ -4,7 +4,6 @@ Welcome to the SurveyMaster API! This project provides a powerful and flexible A
 
 ## Technnologies
 
-"""
 This project utilizes the following technologies:
 
 1. Python
@@ -22,7 +21,6 @@ This project utilizes the following technologies:
 7. Pytest
 
 These technologies are used in this project to build a web application using Flask, validate and parse data using Pydantic, store and retrieve data using MongoDB, and work with BSON using the bson library and pymongo driver.
-"""
 
 ## Features
 
