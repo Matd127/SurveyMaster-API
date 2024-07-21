@@ -6,9 +6,13 @@ from routes.tag_routes import tags_bp
 from routes.question_routes import questions_bp
 from routes.answer_routes import answers_bp
 from flask_jwt_extended import JWTManager
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
-app.config['JWT_SECRET_KEY'] = 'super-secret'
+app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
 jwt = JWTManager(app)
 
 app.register_blueprint(surveys_bp)
